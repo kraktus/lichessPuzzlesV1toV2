@@ -6,7 +6,7 @@ The converter is intentionally loose (just checking that both puzzles have the s
 
 ## Stats
 
-Currently about 12% of the old puzzles (puzzles V1 with index ≥ 61053) and 1% of very old puzzles (puzzles "VO" with index < 61053, on lichess prior to 2015) were re-generated.
+Currently about 12% of the old puzzles (puzzles V1 with index ≥ 61053) and 1% of the very old puzzles (puzzles "V0" with index < 61053, on lichess prior to 2015) were re-generated.
 
 ## Run it
 
