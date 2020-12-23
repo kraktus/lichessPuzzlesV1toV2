@@ -14,14 +14,21 @@ from typing import Dict
 # Functions #
 #############
 
+def fen_without_move(fen: str) -> str:
+    """
+    Remove the parts of the fen relative to moves (for 50-move rule and nb of moves of the game)
+    """
+    # fen ex: rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1
+    return " ".join(fen.split()[:-2])
+
 def get_new_id_by_fen() -> Dict[str, str]:
-    new_id_by_ven: Dict[str, str] = {}
+    new_id_by_fen: Dict[str, str] = {}
     #Fields for the new db: PuzzleId,FEN,Moves,Rating,RatingDeviation,Popularity,NbPlays,Themes,GameUrl
     with open('lichess_db_puzzle.csv', newline='') as csvfile:
         puzzles = csv.reader(csvfile, delimiter=',', quotechar='|')
         for puzzle in puzzles:
-            new_id_by_ven[puzzle[1]] = puzzle[0]
-    return new_id_by_ven
+            new_id_by_fen[fen_without_move(puzzle[1])] = puzzle[0]
+    return new_id_by_fen
 
 def get_old_puzzle_coll() -> "pymongo.collection":
     client = pymongo.MongoClient()
@@ -42,9 +49,8 @@ def main():
             fen = old_puzzle.get("fen")
             if fen is None: #corrupted puzzle
                 print(old_puzzle)
-                print(i)
                 continue       
-            if (new_index := new_index_dic.get(fen)) is not None:
+            if (new_index := new_index_dic.get(fen_without_move(fen))) is not None:
                 writer.writerow({'old_index': i, 'new_index': new_index})
 
 ########
